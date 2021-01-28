@@ -1,23 +1,48 @@
 import logo from './logo.svg';
+import React, { useState, useEffect } from 'react'
 import './App.css';
+import Post from './components/Post'
+
+const mockPosts = [
+  {
+    likes: 20, 
+    description: "This is a post",
+    image: {
+      url: "/uploads/sample_f33df657b7.jpg"
+    }
+  },
+  {
+    likes: 33, 
+    description: "The second post",
+    image: {
+      url: "/uploads/sample_f33df657b7.jpg"
+    }
+  }
+]
 
 function App() {
+
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const response = await fetch('http://localhost:1337/posts')
+      const data = await response.json()
+      setPosts(data)
+    }
+
+    getPosts()
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {posts.map(post => (
+        <Post 
+          likes={post.likes} 
+          description={post.description}
+          url={post.image && post.image.url}
+        />
+      ))}
     </div>
   );
 }
