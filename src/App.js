@@ -1,50 +1,26 @@
-import logo from './logo.svg';
-import React, { useState, useEffect } from 'react'
-import './App.css';
-import Post from './components/Post'
+import React from 'react'
+import {BrowserRouter, Switch, Route} from 'react-router-dom'
 
-const mockPosts = [
-  {
-    likes: 20, 
-    description: "This is a post",
-    image: {
-      url: "/uploads/sample_f33df657b7.jpg"
-    }
-  },
-  {
-    likes: 33, 
-    description: "The second post",
-    image: {
-      url: "/uploads/sample_f33df657b7.jpg"
-    }
-  }
-]
+import Home from './pages/Home'
+import Create from './pages/Create'
+import Nav from "./components/Nav"
+
+import './App.css';
 
 function App() {
-
-  const [posts, setPosts] = useState([])
-
-  useEffect(() => {
-    const getPosts = async () => {
-      const response = await fetch('http://localhost:1337/posts')
-      const data = await response.json()
-      setPosts(data)
-    }
-
-    getPosts()
-  }, [])
-
   return (
     <div className="App">
-      {posts.map(post => (
-        <Post 
-          likes={post.likes} 
-          description={post.description}
-          url={post.image && post.image.url}
-        />
-      ))}
+      <h2>App</h2>
+
+      <BrowserRouter>
+        <Nav />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/create" exact component={Create} />
+        </Switch>
+      </BrowserRouter>
     </div>
-  );
-}
+  )
+} 
 
 export default App;
