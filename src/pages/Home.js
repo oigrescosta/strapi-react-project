@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Post from '../components/Post'
 
@@ -18,11 +19,13 @@ const Home = () => {
     return (
         <div className="Home">
         {posts.map(post => (
+            <Link to={`/${post.id}`}>
             <Post 
-            likes={post.likes} 
-            description={post.description}
-            url={post.image && post.image.url}
-            />
+                likes={post.likes} 
+                description={post.description}
+                url={post.image && post.image.url}
+                />
+            </Link>
         ))}
         </div>
     );
