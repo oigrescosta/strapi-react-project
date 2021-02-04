@@ -1,9 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import Post from '../components/Post'
+
+import {UserContext} from '../context/UserContext'
 
 const SinglePost = ({match, history}) => {
     const {id} = match.params
     console.log("id", id)
+
+    const {user, setUser} = useContext(UserContext)
+    console.log("user", user)
+    console.log("setUser", setUser)
 
     const [post, setPost] = useState({})
     const [loading, setLoading] = useState(true)
