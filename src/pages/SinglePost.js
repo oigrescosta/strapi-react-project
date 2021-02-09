@@ -28,7 +28,10 @@ const SinglePost = ({match, history}) => {
 
     const handleDelete = async () => {
         const response = await fetch(`http://localhost:1337/posts/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.jwt}`
+            },
         })
         const data = await response.json()
         history.push('/')
@@ -41,7 +44,8 @@ const SinglePost = ({match, history}) => {
         const response = await fetch(`http://localhost:1337/posts/${id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.jwt}`
             },
             body: JSON.stringify({
                 description
@@ -70,17 +74,21 @@ const SinglePost = ({match, history}) => {
                                 url={post.image && post.image.url}
                                 likes={post.likes} 
                             />
-                            <button onClick={handleDelete}>Delete this Post</button> 
-                            <button onClick={() => setEdit(true)}>Edit this Post</button> 
-                            {edit &&
-                                <form onSubmit={handleEditSubmit}>
-                                    <input 
-                                        value={description} 
-                                        onChange={(event) => setDescription(event.target.value)} 
-                                        placeholder="New description" 
-                                    />
-                                    <button>Confirm</button>
-                                </form>
+                            {user &&
+                                <>
+                                    <button onClick={handleDelete}>Delete this Post</button> 
+                                    <button onClick={() => setEdit(true)}>Edit this Post</button> 
+                                    {edit &&
+                                        <form onSubmit={handleEditSubmit}>
+                                            <input 
+                                                value={description} 
+                                                onChange={(event) => setDescription(event.target.value)} 
+                                                placeholder="New description" 
+                                            />
+                                            <button>Confirm</button>
+                                        </form>
+                                    }
+                                </>
                             }
                         </>
                     }  
