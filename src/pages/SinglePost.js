@@ -57,6 +57,38 @@ const SinglePost = ({match, history}) => {
         console.log("handleEditSubmit data", data)
     }
 
+    const handleLike = async () => {
+        try {
+            const response = await fetch('http://localhost:1337/likes', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${user.jwt}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    post: parseInt(id)
+                })
+            })
+            fetchPost()
+        } catch(err) {
+            console.log("Exception", err)
+        }
+    }
+
+    const handleRemoveLike = async () => {
+        try {
+            const response = await fetch(`http://localhost:1337/likes/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user.jwt}`,
+                }
+            })
+            fetchPost()
+        } catch(err) {
+            console.log("Exception", err)
+        }
+    }
+
     useEffect(() => {
         fetchPost()
     }, [])
@@ -74,6 +106,14 @@ const SinglePost = ({match, history}) => {
                                 url={post.image && post.image.url}
                                 likes={post.likes} 
                             />
+
+                            {user && 
+                                <>
+                                    <button onClick={handleLike}>Like</button>
+                                    <button onClick={handleRemoveLike}>Remove Like</button>
+                                </>  
+                            }
+
                             {user &&
                                 <>
                                     <button onClick={handleDelete}>Delete this Post</button> 
